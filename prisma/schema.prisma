@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator docs {
+  provider = "node node_modules/prisma-docs-generator"
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+model Organization {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  password_hash String
+  address       String
+  zip_code      String
+  city          String
+  state         String
+  phone_number  String
+  role          Role      @default(MEMBER)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime? @updatedAt
+  Pet           Pet[]
+
+  @@map("organizations")
+}
+
+model Pet {
+  id                 String           @id @default(uuid())
+  name               String
+  description        String
+  age                String
+  size               String
+  energy_level       String
+  independence_level String
+  environment        String
+  organization       Organization     @relation(fields: [organization_id], references: [id])
+  organization_id    String
+  created_at         DateTime         @default(now())
+  updated_at         DateTime?        @updatedAt
+  PetRequirements    PetRequirement[]
+  PetPhotos          PetPhoto[]
+
+  @@map("pets")
+}
+
+model PetRequirement {
+  id          String @id @default(uuid())
+  description String
+  pet         Pet    @relation(fields: [pet_id], references: [id])
+  pet_id      String
+
+  @@map("pet_requirements")
+}
+
+model PetPhoto {
+  id        String @id @default(uuid())
+  photo_url String
+  pet       Pet    @relation(fields: [pet_id], references: [id])
+  pet_id    String
+
+  @@map("pet_photos")
+}

@@ -1,5 +1,5 @@
 {
-  "name": "vitest-environment-prisma",
+  "name": "vitest-environment-findafriend",
   "version": "1.0.0",
   "main": "prisma-test-environment.ts",
   "license": "MIT"
