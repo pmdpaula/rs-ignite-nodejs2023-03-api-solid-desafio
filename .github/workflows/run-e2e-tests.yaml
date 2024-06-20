@@ -15,8 +15,7 @@ jobs:
         env:
           POSTGRESQL_USERNAME: docker
           POSTGRESQL_PASSWORD: docker
-          POSTGRESQL_DATABASE: apisolid
-
+          POSTGRESQL_DATABASE: findafriend
 
     steps:
       - uses: actions/checkout@v3
@@ -24,11 +23,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'yarn'
+          cache: "npm"
 
-      - run: yarn
+      - run: npm
 
-      - run: yarn test:e2e
+      - run: npm run test:e2e
         env:
           JWT_SECRET: testing_a_secret_with_at_least_thirty_two_characters
-          DATABASE_URL: "postgresql://docker:docker@localhost:5432/apisolid?schema=public"
+          DATABASE_URL: "postgresql://docker:docker@localhost:5432/findafriend?schema=findafriend"
